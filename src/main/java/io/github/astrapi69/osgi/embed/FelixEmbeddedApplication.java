@@ -12,11 +12,12 @@ import java.util.Enumeration;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Properties;
-import java.util.ServiceLoader;
 
+import io.github.astrapi69.file.search.PathFinder;
 import org.apache.felix.framework.FrameworkFactory;
 import org.apache.felix.framework.util.Util;
 import org.osgi.framework.Constants;
+import org.osgi.framework.FrameworkEvent;
 import org.osgi.framework.launch.Framework;
 
 public class FelixEmbeddedApplication
@@ -46,13 +47,13 @@ public class FelixEmbeddedApplication
 	/**
 	 * The default name used for the configuration properties file.
 	 **/
-	public static final String CONFIG_PROPERTIES_FILE_VALUE = "config.properties";
+	public static final String CONFIG_PROPERTIES_FILE_VALUE = "conf/config.properties";
 	/**
 	 * Name of the configuration directory.
 	 */
 	public static final String CONFIG_DIRECTORY = "conf";
 
-	private static Framework m_fwk = null;
+	private static Framework framework = null;
 
 	public static void main(String[] args) throws Exception
 	{
@@ -119,10 +120,10 @@ public class FelixEmbeddedApplication
 				{
 					try
 					{
-						if (m_fwk != null)
+						if (framework != null)
 						{
-							m_fwk.stop();
-							m_fwk.waitForStop(0);
+							framework.stop();
+							framework.waitForStop(0);
 						}
 					}
 					catch (Exception ex)
@@ -136,17 +137,25 @@ public class FelixEmbeddedApplication
 		try
 		{
 			// (8) Create an instance and initialize the framework.
-			FrameworkFactory frameworkFactory = ServiceLoader.load(FrameworkFactory.class)
-				.iterator().next();
-			m_fwk = frameworkFactory.newFramework(configProps);
-			m_fwk.init();
+			FrameworkFactory frameworkFactory = getFrameworkFactory();
+
+			framework = newFramework(frameworkFactory, configProps);
+			framework.init();
 			// (9) Use the system bundle context to process the auto-deploy
 			// and auto-install/auto-start properties.
-			AutoProcessor.process(configProps, m_fwk.getBundleContext());
+			AutoProcessor.process(configProps, framework.getBundleContext());
 			// (10) Start the framework.
-			m_fwk.start();
-			// (11) Wait for framework to stop to exit the VM.
-			m_fwk.waitForStop(0);
+			FrameworkEvent event;
+			do
+			{
+				// Start the framework.
+				framework.start();
+				// Wait for framework to stop to exit the VM.
+				event = framework.waitForStop(0);
+			}
+			// If the framework was updated, then restart it.
+			while (event.getType() == FrameworkEvent.STOPPED_UPDATE);
+			// Otherwise, exit.
 			System.exit(0);
 		}
 		catch (Exception ex)
@@ -157,6 +166,11 @@ public class FelixEmbeddedApplication
 		}
 	}
 
+	private static Framework newFramework(FrameworkFactory frameworkFactory,
+		Map<String, String> configProps)
+	{
+		return frameworkFactory.newFramework(configProps);
+	}
 
 	/**
 	 * Simple method to parse META-INF/services file for framework factory. Currently, it assumes
@@ -356,7 +370,7 @@ public class FelixEmbeddedApplication
 			else
 			{
 				// Can't figure it out so use the current directory as default.
-				confDir = new File(System.getProperty("user.dir"), CONFIG_DIRECTORY);
+				confDir = new File(PathFinder.getSrcMainResourcesDir(), CONFIG_DIRECTORY);
 			}
 
 			try
