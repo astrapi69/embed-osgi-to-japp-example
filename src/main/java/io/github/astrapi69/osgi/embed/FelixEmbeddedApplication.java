@@ -29,22 +29,9 @@ public class FelixEmbeddedApplication
 	public static final String BUNDLE_DIR_SWITCH = "-b";
 
 	/**
-	 * The property name used to specify whether the launcher should install a shutdown hook.
-	 **/
-	public static final String SHUTDOWN_HOOK_PROP = "felix.shutdown.hook";
-	/**
-	 * The property name used to specify an URL to the system property file.
-	 **/
-	public static final String SYSTEM_PROPERTIES_PROP = "felix.system.properties";
-	/**
 	 * The default name used for the system properties file.
 	 **/
 	public static final String SYSTEM_PROPERTIES_FILE_VALUE = "system.properties";
-	/**
-	 * The property name used to specify an URL to the configuration property file to be used for
-	 * the created the framework instance.
-	 **/
-	public static final String CONFIG_PROPERTIES_PROP = "felix.config.properties";
 	/**
 	 * The default name used for the configuration properties file.
 	 **/
@@ -54,7 +41,7 @@ public class FelixEmbeddedApplication
 	 */
 	public static final String CONFIG_DIRECTORY = "conf";
 
-	private static Framework framework = null;
+	private static Framework framework;
 
 	public static void main(String[] args) throws Exception
 	{
@@ -112,7 +99,7 @@ public class FelixEmbeddedApplication
 		}
 
 		// (7) Add a shutdown hook to clean stop the framework.
-		String enableHook = configProps.get(SHUTDOWN_HOOK_PROP);
+		String enableHook = configProps.get(FelixPropertyKey.SHUTDOWN_HOOK.getKey());
 		if ((enableHook == null) || !enableHook.equalsIgnoreCase("false"))
 		{
 			Runtime.getRuntime().addShutdownHook(new Thread("Felix Shutdown Hook")
@@ -230,7 +217,7 @@ public class FelixEmbeddedApplication
 
 		// See if the property URL was specified as a property.
 		URL propURL = null;
-		String custom = System.getProperty(SYSTEM_PROPERTIES_PROP);
+		String custom = System.getProperty(FelixPropertyKey.SYSTEM_PROPERTIES.getKey());
 		if (custom != null)
 		{
 			try
@@ -338,7 +325,7 @@ public class FelixEmbeddedApplication
 
 		// See if the property URL was specified as a property.
 		URL propURL = null;
-		String custom = System.getProperty(CONFIG_PROPERTIES_PROP);
+		String custom = System.getProperty(FelixPropertyKey.CONFIG_PROPERTIES.getKey());
 		if (custom != null)
 		{
 			try
