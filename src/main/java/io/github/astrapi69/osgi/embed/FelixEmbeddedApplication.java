@@ -13,12 +13,13 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Properties;
 
-import io.github.astrapi69.file.search.PathFinder;
 import org.apache.felix.framework.FrameworkFactory;
 import org.apache.felix.framework.util.Util;
 import org.osgi.framework.Constants;
 import org.osgi.framework.FrameworkEvent;
 import org.osgi.framework.launch.Framework;
+
+import io.github.astrapi69.file.search.PathFinder;
 
 public class FelixEmbeddedApplication
 {
