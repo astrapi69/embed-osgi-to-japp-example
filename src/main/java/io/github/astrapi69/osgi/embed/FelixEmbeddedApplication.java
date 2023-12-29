@@ -1,5 +1,13 @@
 package io.github.astrapi69.osgi.embed;
 
+import io.github.astrapi69.file.search.PathFinder;
+import org.apache.felix.framework.FrameworkFactory;
+import org.apache.felix.framework.util.Util;
+import org.osgi.framework.BundleContext;
+import org.osgi.framework.Constants;
+import org.osgi.framework.FrameworkEvent;
+import org.osgi.framework.launch.Framework;
+
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -12,14 +20,6 @@ import java.util.Enumeration;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Properties;
-
-import org.apache.felix.framework.FrameworkFactory;
-import org.apache.felix.framework.util.Util;
-import org.osgi.framework.Constants;
-import org.osgi.framework.FrameworkEvent;
-import org.osgi.framework.launch.Framework;
-
-import io.github.astrapi69.file.search.PathFinder;
 
 public class FelixEmbeddedApplication
 {
@@ -35,7 +35,7 @@ public class FelixEmbeddedApplication
 	/**
 	 * The default name used for the configuration properties file.
 	 **/
-	public static final String CONFIG_PROPERTIES_FILE_VALUE = "conf/config.properties";
+	public static final String CONFIG_PROPERTIES_FILE_VALUE = "config.properties";
 	/**
 	 * Name of the configuration directory.
 	 */
@@ -131,7 +131,16 @@ public class FelixEmbeddedApplication
 			framework.init();
 			// (9) Use the system bundle context to process the auto-deploy
 			// and auto-install/auto-start properties.
-			AutoProcessor.process(configProps, framework.getBundleContext());
+			BundleContext bundleContext = framework.getBundleContext();
+			AutoProcessor.process(configProps, bundleContext);
+//			File projectDirectory = PathFinder.getProjectDirectory();
+//			String bundlePath = "file:" +
+//					projectDirectory.getAbsolutePath() +
+//					"/bundle/SimpleBundle.jar";
+//
+//			Bundle simpleBundle = bundleContext.installBundle(bundlePath);
+//			String location = simpleBundle.getLocation();
+//			System.out.println("starting bundle " + location);
 			// (10) Start the framework.
 			FrameworkEvent event;
 			do
