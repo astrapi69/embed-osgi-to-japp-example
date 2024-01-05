@@ -1,6 +1,10 @@
 package io.github.astrapi69.osgi.host.app;
 
-import io.github.astrapi69.osgi.host.core.HostActivator;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
 import org.apache.felix.framework.Felix;
 import org.apache.felix.framework.util.FelixConstants;
 import org.osgi.framework.BundleContext;
@@ -8,10 +12,7 @@ import org.osgi.framework.BundleException;
 import org.osgi.framework.Constants;
 import org.osgi.framework.launch.Framework;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import io.github.astrapi69.osgi.host.core.HostActivator;
 
 public class HostApplication
 {
@@ -38,8 +39,8 @@ public class HostApplication
 		Map configMap = new HashMap();
 		// Export the host provided service interface package.
 		configMap.put(Constants.FRAMEWORK_SYSTEMPACKAGES_EXTRA,
-			"io.github.astrapi69.osgi.host.service.search; version=1.0.0\n" +
-					"io.github.mnl.osgiGettingStarted.simpleBundle;  version=1.0.0");
+			// "io.github.astrapi69.osgi.host.service.search; version=1.0.0\n" +
+			"io.github.mnl.osgiGettingStarted.simpleBundle;  version=1.0.0");
 		// Create host activator;
 		m_activator = new HostActivator(m_lookupMap);
 		List list = new ArrayList();
@@ -52,11 +53,6 @@ public class HostApplication
 			// our configuration properties.
 			m_felix = new Felix(configMap);
 			BundleContext bundleContext = m_felix.getBundleContext();
-
-			while (bundleContext == null) {
-				bundleContext = m_felix.getBundleContext();
-				Thread.sleep(100);
-			}
 
 			// Now start Felix instance.
 			m_felix.start();

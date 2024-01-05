@@ -6,6 +6,8 @@ dependencies {
     testAnnotationProcessor("org.projectlombok:lombok:$lombokVersion")
     implementation("org.apache.felix:org.apache.felix.framework:$orgApacheFelixFrameworkVersion")
     implementation("io.github.astrapi69:file-worker:$fileWorkerVersion")
+    implementation("io.github.astrapi69:swing-base-components:$swingBaseComponentsVersion")
+    implementation("io.github.astrapi69:awt-extensions:$awtExtensionsVersion")
     testImplementation("io.github.astrapi69:silly-io:$sillyIoVersion")
     testImplementation("io.github.astrapi69:throwable:$throwableVersion")
     testImplementation("io.github.astrapi69:gradle-migration-data:$gradleMigrationDataVersion")

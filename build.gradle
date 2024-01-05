@@ -52,7 +52,3 @@ tasks.withType(JavaCompile) {
 tasks.named("test") {
     it.mustRunAfter(tasks.named("jar"))
 }
-
-runOsgi {
-    bundles += subprojects
-}

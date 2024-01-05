@@ -3,7 +3,8 @@ package io.github.astrapi69.osgi.embed;
 import lombok.Getter;
 
 /**
- * The enum class {@link FelixPropertyKey} provides constants for the property keys from the configuration file
+ * The enum class {@link FelixPropertyKey} provides constants for the property keys from the
+ * configuration file
  */
 public enum FelixPropertyKey
 {
@@ -49,7 +50,9 @@ public enum FelixPropertyKey
 
 	/**
 	 * Creates a new enum {@link FelixPropertyKey} object
-	 * @param key The property name of the key
+	 * 
+	 * @param key
+	 *            The property name of the key
 	 */
 	private FelixPropertyKey(String key)
 	{
