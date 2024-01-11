@@ -14,6 +14,11 @@ import org.osgi.framework.launch.Framework;
 
 import io.github.astrapi69.osgi.host.core.HostActivator;
 
+/**
+ * Using OSGi in as a standalone application. See also <a href=
+ * "https://stackoverflow.com/questions/8518837/using-osgi-in-a-desktop-standalone-application">Using
+ * OSGi in a desktop standalone application</a>
+ */
 public class HostApplication
 {
 	private HostActivator m_activator = null;

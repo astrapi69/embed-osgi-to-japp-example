@@ -56,8 +56,7 @@ public class HostActivator implements BundleActivator
 		// restore the component position...
 		componentPositionStore.restorePosition();
 		// add a shutdown hook...
-		Runtime.getRuntime()
-			.addShutdownHook(new Thread(() -> componentPositionStore.storePosition()));
+		Runtime.getRuntime().addShutdownHook(new Thread(componentPositionStore::storePosition));
 		// show the frame...
 		frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
 		frame.setVisible(true);
