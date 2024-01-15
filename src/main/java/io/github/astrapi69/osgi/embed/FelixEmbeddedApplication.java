@@ -83,10 +83,11 @@ public class FelixEmbeddedApplication
 			System.err.println("No " + CONFIG_PROPERTIES_FILE_VALUE + " found.");
 			configProps = new HashMap<String, String>();
 		}
+		configProps.put(Constants.FRAMEWORK_STORAGE_CLEAN,
+			Constants.FRAMEWORK_STORAGE_CLEAN_ONFIRSTINIT);
 
 		configProps.put(Constants.FRAMEWORK_SYSTEMPACKAGES_EXTRA,
-			// "io.github.astrapi69.osgi.host.service.search; version=1.0.0\n" +
-			"io.github.mnl.osgiGettingStarted.simpleBundle;  version=1.0.0");
+			"javax.swing,io.github.astrapi69.awt.screen.position; version=1.2");
 
 		// (4) Copy framework properties from the system properties.
 		FelixEmbeddedApplication.copySystemProperties(configProps);
